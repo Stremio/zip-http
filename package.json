@@ -9,7 +9,7 @@
   "dependencies": {
     "request": "2.88.0",
     "router": "^1.3.1",
-    "unzipper": "Stremio/node-unzipper#0d60be422f7707ff9dc77f1ece402160afc6cca0",
+    "unzipper": "Stremio/node-unzipper#d23dbb693b3e593eefb1aee8497046b558e633dc",
     "mime": "1.3.6",
     "body-parser": "1.19.0"
   },
