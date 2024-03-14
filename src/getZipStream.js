@@ -1,5 +1,6 @@
 const unzipper = require('unzipper')
 const request = require('request')
+const safeStatelessRegex = require('safe-stateless-regex')
 
 const isRegex = /^\/(.*)\/(.*)$/
 
@@ -10,7 +11,7 @@ function parseQuery(req) {
   } catch(e) {}
   if ((opts.fileMustInclude || []).length)
     opts.fileMustInclude = opts.fileMustInclude.map(el => {
-      if (isRegex.test(el)) {
+      if ((el || '').match(isRegex)) {
         const parts = isRegex.exec(el)
         try {
           return new RegExp(parts[1],parts[2])
@@ -53,7 +54,7 @@ async function getZipStream(req) {
     if ((opts.fileMustInclude || []).length) {
       return !!opts.fileMustInclude.find(reg => {
         reg = typeof reg === 'string' ? new RegExp(reg) : reg
-        return reg.test(d.path || '')
+        return safeStatelessRegex(d.path || '', reg, 500)
       })
     } else if (opts.hasOwnProperty('fileIdx')) {
       return opts.fileIdx === countFiles
