@@ -1,5 +1,6 @@
 const unzipper = require('unzipper')
 const request = require('request')
+const store = require('./store')
 const safeStatelessRegex = require('safe-stateless-regex')
 
 const isRegex = /^\/(.*)\/(.*)$/
