@@ -21,8 +21,16 @@ function getRouter() {
 
   router.get('/stream', async (req, res) => {
     const file = await getZipStream(req)
-
     const contentLength = file.uncompressedSize
+
+    if (((req || {}).headers || {}).range) {
+      // range requests not currently supported
+      if (req.headers.range !== 'bytes=0-' && req.headers.range !== 'bytes=0-'+(contentLength-1)) {
+        res.statusCode = 405
+        res.end()
+        return
+      }
+    }
 
     if (req.method === 'HEAD') {
       res.statusCode = 204
