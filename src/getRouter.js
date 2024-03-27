@@ -20,7 +20,15 @@ function getRouter() {
   })
 
   router.get('/stream', async (req, res) => {
-    const file = await getZipStream(req)
+    let file
+    try {
+      file = await getZipStream(req)
+    } catch(e) {
+      console.error(e)
+      res.statusCode = 500
+      res.end()
+      return
+    }
     const contentLength = file.uncompressedSize
 
     if (((req || {}).headers || {}).range) {
